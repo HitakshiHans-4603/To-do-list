@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <section class="container">
+        <div class="heading">
+          <img class="heading__img" src="https://png.pngtree.com/png-vector/20220527/ourmid/pngtree-cute-teddy-bear-cartoon-with-blank-sign-png-image_4759109.png">
+          <h1 class="heading__title">Hitakshi's To-Do List</h1>
+        </div>
+        <form class="form" action="/submit" method="POST">
+          <div>
+            <label class="form__label" for="todo">~ Today I need to ~</label>
+            <input class="form__input"
+                 type="text" 
+                 id="todo" 
+                 name="todo"
+                 size="30"
+                 required>
+                 <!-- <input type="submit" value="OK"> -->
+            <button class="button" type="submit"><span>Submit</span></button>
+          </div>
+        </form>
+        
+        <div>
+            <ul class="toDoList">
+                <% if (locals.itemList) {
+                  for (var i = 0; i < itemList.length; i++) { %>
+                    <li>
+                      <%= itemList[i] %>
+                      <form action="/del" class="form" method="POST">
+                        <input type="hidden" name="itemIndex" value="<%= i %>">
+                        <input type="submit" value="Delete">
+                      </form>
+                      <form action="/edit" method="POST">
+                        <input type="hidden" name="itemIn" value="<%= i %>">
+                        <input type="text" name="editedItem" style="display: none;">
+                        <button type="button" class="edit-button">Edit</button>
+                        <input type="submit" value="Done" style="display: none;">
+                      </form>
+                    </li>
+                  <% } } %>
+                </ul>
+        </div>
+      </section>
+      <script>
+  const editButtons = document.querySelectorAll('.edit-button');
+
+  editButtons.forEach((button, index) => {
+    const editForm = button.parentElement;
+    const editInput = editForm.querySelector('input[name="editedItem"]');
+    const doneButton = editForm.querySelector('input[type="submit"][value="Done"]');
+
+    button.addEventListener('click', () => {
+      
+      document.querySelectorAll('input[name="editedItem"]').forEach(input => {
+        input.style.display = 'none';
+      });
+      document.querySelectorAll('input[type="submit"][value="Done"]').forEach(submit => {
+        submit.style.display = 'none';
+      });
+
+     
+      editInput.style.display = 'inline';
+      doneButton.style.display = 'inline';
+    });
+  });
+</script>
+
+
+</body>
+</html>
